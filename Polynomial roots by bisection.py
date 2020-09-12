@@ -9,7 +9,7 @@ import math
 import random
 import sys
 
-# F(x) = Any polynomial of grade 10 or less between the range -10,+10
+# F(x) = Any polynomial of any grade between the range (a,b)
 
 #   NZeros is the number of desired zeros
 #   x holds the independent data variable´s values
@@ -63,10 +63,14 @@ def sgn(x):
         return -1
     #endif
     
-def SetLimits():
+def SetLimits(a,b):
+    if(b<a):
+        aux=a
+        a=b
+        b=aux
     global less,more
-    r1=random.uniform(-10,+10)
-    r2=random.uniform(-10,+10)
+    r1=random.uniform(a,b)
+    r2=random.uniform(a,b)
     if (r1<r2):
         less=r1
         more=r2
@@ -104,8 +108,7 @@ def Bisect(polinomio,lower,upper):
 
 #
 #   MAIN
-#
-# F(x)=F*sen**2(x+DI)+DE    -10,+10
+#FINDING ROOTS OF A POLYNOMIAL OF ANY GRADE BETWEEN THE RANGE (a,b)
 while True:
     print("Please input the grade of the polynomial you want to create")
     while True:
@@ -131,9 +134,12 @@ while True:
     #endwhile
     lista=[0]*NZeros
     ZerosFound=0
+    print("Input the range (a,b) between you want to find the roots")
+    a=check_format("a")
+    b=check_format("b")
     for i in range(0,NZeros):
         for j in range(0,100):               # Up to 100 attempts to set the limits
-            SetLimits()			              # return <less,more>
+            SetLimits(a,b)			              # return <less,more>
             X=Bisect(polinomio,less,more)
             Fx=poly(polinomio,X)
             if (abs(Fx)>=1e-06):
