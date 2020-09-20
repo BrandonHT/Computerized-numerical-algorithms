@@ -20,6 +20,7 @@ import math
 #   array x is sorted from smallest to largest
 #
 
+## Function to sort an array with their respective index array
 def sort(n,x,y):
     for i in range(0,n-1):
         tmin=x[i]
@@ -45,6 +46,7 @@ def sort(n,x,y):
     return
 #endSort
 
+## Function to check if the format of the coefficients is correct
 def check_format_coefficients(x):
     while True:
         try:
@@ -56,6 +58,7 @@ def check_format_coefficients(x):
     ##EndWhile
 ##EndFunction
 
+## Function to check if the format of the grade is correct
 def check_format_grade(x):
     while True:
         try:
@@ -67,6 +70,7 @@ def check_format_grade(x):
     ##EndWhile
 ##EndFunction
 
+## Function to generate a polynomial function
 def polynomial():
     print("Please input the grade of the polynomial you want to create")
     while True:
@@ -96,6 +100,7 @@ def polynomial():
     return Fx
 ##EndFunction
 
+## Function that calculates the derivative of a polynomial
 def derivative_pol(Fx):
     grade=len(Fx)-1
     Fx_prime=[0]*(grade)
@@ -103,6 +108,7 @@ def derivative_pol(Fx):
         Fx_prime[i]=Fx[i]*(grade-i)
     return Fx_prime
 
+## Function to define a start point between the range of interest
 def start(a,b):
     if a>b:
         x0=random.uniform(b,a)
@@ -110,6 +116,7 @@ def start(a,b):
         x0=random.uniform(a, b)
     return x0
 
+## Function that evaluates a point x in a function
 def evaluate_pol(Fx,x):
     res=Fx[-1]
     grade=len(Fx)-1
@@ -117,6 +124,7 @@ def evaluate_pol(Fx,x):
         res+=Fx[i]*x**(grade-i)
     return res 
     
+## Function that calculates the newton raphson algorithm for a polynomial function
 def newtonRaphson(Fx,x0):
     converge=False
     x_n=x0
@@ -128,12 +136,15 @@ def newtonRaphson(Fx,x0):
         x_n=x_n1
     return x_n1
 
+## Function that evaluates a point x in a sine function
 def sine(A,B,C,D,x):
     return A*math.sin(B*x+C)+D
 
+## Function that evaluates a point x in the derivative of a sine function
 def sine_prime(A,B,C,D,x):
     return A*B*math.cos(B*x+C)
 
+## Function that calculates the newton raphson algorithm for a sine function
 def newtonRaphson_Sine(A,B,C,D,x0):
     converge=False
     x_n=x0
@@ -144,18 +155,23 @@ def newtonRaphson_Sine(A,B,C,D,x0):
         x_n=x_n1
     return x_n1
 
+## Function that evaluates a point x in a log10 function
 def log10(A,B,C,D,x):
     return A*math.log10(B*x+C)+D
 
+## Function that evaluates a point x in the derivative of a log10 function
 def log10_derivative(A,B,C,D,x):
     return (A*B)/(B*x+C)
 
+## Function that evaluates a point x in a exponential function
 def exp(A,B,C,x):
     return A*math.exp(B*x)+C
 
+## Function that evaluates a point x in the derivative of a exponential function
 def exp_derivative(A,B,C,x):
     return A*B*math.exp(B*x)
 
+## Function that calculates the newton raphson algorithm for a log10 function
 def newtonRaphson_log10(A,B,C,D,x0):
     converge=False
     x_n=x0
@@ -166,6 +182,7 @@ def newtonRaphson_log10(A,B,C,D,x0):
         x_n=x_n1
     return x_n1
 
+## Function that calculates the newton raphson algorithm for a exponential function
 def newtonRaphson_exp(A,B,C,x0):
     converge=False
     x_n=x0
@@ -358,8 +375,8 @@ while True:
     x=list(range(ZerosFound))
     y=list(range(ZerosFound))
     for i in range(0,ZerosFound):
-        x[i]=A[i][1]                #Valor
-        y[i]=A[i][0]                #Orden
+        x[i]=A[i][1]                #Value
+        y[i]=A[i][0]                #Order
     sort(ZerosFound,x,y)
     print("\tZeros Sorted:")
     for i in range(0,ZerosFound):
