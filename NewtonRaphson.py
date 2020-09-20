@@ -9,7 +9,7 @@ import random
 import sys
 import math
 
-# F(x) = Any polynomial of any grade between the range (a,b)
+# Fx could be a polynomial, sine, logarithmic or exponential function
 
 #   NZeros is the number of desired zeros
 #   x holds the independent data variable´s values
@@ -111,11 +111,10 @@ def start(a,b):
     return x0
 
 def evaluate_pol(Fx,x):
-    res=0
+    res=Fx[-1]
     grade=len(Fx)-1
     for i in range(grade):
         res+=Fx[i]*x**(grade-i)
-    res+=Fx[i+1]
     return res 
     
 def newtonRaphson(Fx,x0):
@@ -179,7 +178,7 @@ def newtonRaphson_exp(A,B,C,x0):
 
 #
 #   MAIN
-#FINDING ROOTS OF A POLYNOMIAL OF ANY GRADE BETWEEN THE RANGE (a,b) USING NEWTON RAPHSON ALGORITHM
+#FINDING ROOTS OF A FUNCTION BETWEEN THE RANGE (a,b) USING NEWTON RAPHSON ALGORITHM
 while True:
     print("Select one of the following functions to find the roots:")
     print("1.- Polynomial")
