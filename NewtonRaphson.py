@@ -20,6 +20,8 @@ import math
 #   array x is sorted from smallest to largest
 #
 
+global maxIter
+maxIter=100
 ## Function to sort an array with their respective index array
 def sort(n,x,y):
     for i in range(0,n-1):
@@ -58,8 +60,8 @@ def check_format_coefficients(x):
     ##EndWhile
 ##EndFunction
 
-## Function to check if the format of the grade is correct
-def check_format_grade(x):
+## Function to check if the format of the degree is correct
+def check_format_degree(x):
     while True:
         try:
             x=float(input("\""+x+"\")\t"))
@@ -72,29 +74,29 @@ def check_format_grade(x):
 
 ## Function to generate a polynomial function
 def polynomial():
-    print("Please input the grade of the polynomial you want to create")
+    print("Please input the degree of the polynomial you want to create")
     while True:
-        grade=check_format_grade("Grade")
-        if(grade>=1):
+        degree=check_format_degree("Degree")
+        if(degree>=1):
             break
         #endif
         print("Error, it may be, at least, a first degree")
     #endwhile
-    Fx=[0]*(grade+1)
-    print("Input the coefficient of the grade ",grade," of the polynomial:\t")
+    Fx=[0]*(degree+1)
+    print("Input the coefficient of the degree ",degree," of the polynomial:\t")
     while True:
-        texto="Grade "+str(grade)
-        a=check_format_coefficients(texto)
-        if a==0:
-            print("Error. The coefficient of the grade ",grade," may be different of zero.")
+        texto="Degree "+str(degree)
+        aa=check_format_coefficients(texto)
+        if aa==0:
+            print("Error. The coefficient of the degree ",degree," may be different of zero.")
         else:
-            Fx[0]=a
+            Fx[0]=aa
             break
         ##EndIf
     ##EndWhile
-    for i in range(1,grade+1):
-        print("Input the coefficient of the grade ",grade-i," of the polynomial:\t")
-        texto="Grade "+str((grade-i))
+    for i in range(1,degree+1):
+        print("Input the coefficient of the degree ",degree-i," of the polynomial:\t")
+        texto="Degree "+str((degree-i))
         Fx[i]=check_format_coefficients(texto)
     ##EndFor
     return Fx
@@ -102,26 +104,30 @@ def polynomial():
 
 ## Function that calculates the derivative of a polynomial
 def derivative_pol(Fx):
-    grade=len(Fx)-1
-    Fx_prime=[0]*(grade)
-    for i in range(grade):
-        Fx_prime[i]=Fx[i]*(grade-i)
+    degree=len(Fx)-1
+    Fx_prime=[0]*(degree)
+    for i in range(degree):
+        Fx_prime[i]=Fx[i]*(degree-i)
     return Fx_prime
 
 ## Function to define a start point between the range of interest
 def start(a,b):
     if a>b:
         x0=random.uniform(b,a)
+        c=b
+        d=a
     else:
         x0=random.uniform(a, b)
-    return x0
+        c=a
+        d=b
+    return x0,c,d
 
 ## Function that evaluates a point x in a function
 def evaluate_pol(Fx,x):
     res=Fx[-1]
-    grade=len(Fx)-1
-    for i in range(grade):
-        res+=Fx[i]*x**(grade-i)
+    degree=len(Fx)-1
+    for i in range(degree):
+        res+=Fx[i]*x**(degree-i)
     return res 
     
 ## Function that calculates the newton raphson algorithm for a polynomial function
@@ -129,11 +135,16 @@ def newtonRaphson(Fx,x0):
     converge=False
     x_n=x0
     Fx_prime=derivative_pol(Fx)
-    while not converge:
+    it=0
+    while not converge and it<maxIter:
         x_n1=x_n-(evaluate_pol(Fx,x_n)/evaluate_pol(Fx_prime,x_n))
         if math.isclose(x_n, x_n1, rel_tol=1e-9):
             converge=True
         x_n=x_n1
+        it+=1
+        if it==maxIter and not converge:
+            print("\n\n\t**** Is is impossible to find a valid zero!!!!!!! ****\n\n")
+            sys.exit("*** End of the program ***\n\n")
     return x_n1
 
 ## Function that evaluates a point x in a sine function
@@ -148,11 +159,16 @@ def sine_prime(A,B,C,D,x):
 def newtonRaphson_Sine(A,B,C,D,x0):
     converge=False
     x_n=x0
-    while not converge:
+    it=0
+    while not converge and it<maxIter:
         x_n1=x_n-(sine(A,B,C,D,x_n)/sine_prime(A,B,C,D,x_n))
         if math.isclose(x_n, x_n1, rel_tol=1e-9):
             converge=True
         x_n=x_n1
+        it+=1
+        if it==maxIter and not converge:
+            print("\n\n\t**** Is is impossible to find a valid zero!!!!!!! ****\n\n")
+            sys.exit("*** End of the program ***\n\n")
     return x_n1
 
 ## Function that evaluates a point x in a log10 function
@@ -175,22 +191,32 @@ def exp_derivative(A,B,C,x):
 def newtonRaphson_log10(A,B,C,D,x0):
     converge=False
     x_n=x0
-    while not converge:
+    it=0
+    while not converge and it<maxIter:
         x_n1=x_n-(log10(A,B,C,D,x_n)/log10_derivative(A,B,C,D,x_n))
         if math.isclose(x_n, x_n1, rel_tol=1e-9):
             converge=True
         x_n=x_n1
+        it+=1
+        if it==maxIter and not converge:
+            print("\n\n\t**** Is is impossible to find a valid zero!!!!!!! ****\n\n")
+            sys.exit("*** End of the program ***\n\n")
     return x_n1
 
 ## Function that calculates the newton raphson algorithm for a exponential function
 def newtonRaphson_exp(A,B,C,x0):
     converge=False
     x_n=x0
-    while not converge:
+    it=0
+    while not converge and it<maxIter:
         x_n1=x_n-(exp(A,B,C,x_n)/exp_derivative(A,B,C,x_n))
         if math.isclose(x_n, x_n1, rel_tol=1e-9):
             converge=True
         x_n=x_n1
+        it+=1
+        if it==maxIter and not converge:
+            print("\n\n\t**** Is is impossible to find a valid zero!!!!!!! ****\n\n")
+            sys.exit("*** End of the program ***\n\n")
     return x_n1
 
 #
@@ -203,8 +229,8 @@ while True:
     print("3.- Log10")
     print("4.- Exponential")
     while True:
-        option=check_format_grade("Option")
-        if(option>=1 and option<=5):
+        option=check_format_degree("Option")
+        if(option>=1 and option<=4):
             break
         #EndIf
         print("Error. Select one of the available options.")
@@ -215,7 +241,7 @@ while True:
     print("Input the number of roots you want to find")
     NZeros=0
     while True:
-        NZeros=check_format_grade("NZeros")
+        NZeros=check_format_degree("NZeros")
         if (((NZeros>=1)and(NZeros<=20))):
             break
         #endif
@@ -228,7 +254,7 @@ while True:
     
         for i in range(NZeros):
             for j in range(100):
-                x0=start(a, b)
+                x0,c,d=start(a, b)
                 x_n=newtonRaphson(Fx, x0)
                 sameZero=False
                 for k in range(0,i):
@@ -238,7 +264,7 @@ while True:
                         break                   #Get out of the Zero comparison
                     #endif
                 #endfor
-                if (not(sameZero)):             #Exit the "j" loop
+                if (not(sameZero) and c<=x_n and x_n<=d):             #Exit the "j" loop
                     break                       #Back to the "i" loop
                 #endif
             #endfor
@@ -267,7 +293,7 @@ while True:
         
         for i in range(NZeros):
             for j in range(100):
-                x0=start(a, b)
+                x0,c,d=start(a, b)
                 x_n=newtonRaphson_Sine(A,B,C,D,x0)
                 sameZero=False
                 for k in range(0,i):
@@ -277,7 +303,7 @@ while True:
                         break                   #Get out of the Zero comparison
                     #endif
                 #endfor
-                if (not(sameZero)):             #Exit the "j" loop
+                if (not(sameZero) and c<=x_n and x_n<=d):             #Exit the "j" loop
                     break                       #Back to the "i" loop
                 #endif
             #endfor
@@ -300,13 +326,13 @@ while True:
             print("Error. The A value may be different of zero.")
         print("Enter the B value: ")
         B=check_format_coefficients("B")
-        print("Enter the BCvalue: ")
+        print("Enter the B value: ")
         C=check_format_coefficients("C")
         print("Enter the D value: ")
         D=check_format_coefficients("D")
         for i in range(NZeros):
             for j in range(100):
-                x0=start(a, b)
+                x0,c,d=start(a, b)
                 x_n=newtonRaphson_log10(A,B,C,D,x0)
                 sameZero=False
                 for k in range(0,i):
@@ -316,7 +342,7 @@ while True:
                         break                   #Get out of the Zero comparison
                     #endif
                 #endfor
-                if (not(sameZero)):             #Exit the "j" loop
+                if (not(sameZero) and c<=x_n and x_n<=d):             #Exit the "j" loop
                     break                       #Back to the "i" loop
                 #endif
             #endfor
@@ -343,7 +369,7 @@ while True:
         C=check_format_coefficients("C")
         for i in range(NZeros):
             for j in range(100):
-                x0=start(a, b)
+                x0,c,d=start(a, b)
                 x_n=newtonRaphson_exp(A,B,C,x0)
                 sameZero=False
                 for k in range(0,i):
@@ -353,7 +379,7 @@ while True:
                         break                   #Get out of the Zero comparison
                     #endif
                 #endfor
-                if (not(sameZero)):             #Exit the "j" loop
+                if (not(sameZero) and c<=x_n and x_n<=d):            #Exit the "j" loop
                     break                       #Back to the "i" loop
                 #endif
             #endfor
