@@ -1,5 +1,5 @@
 ﻿"""
-        SPLINES.Sort.6
+        SPLINES.Sort.7
         
    Lee el nombre del archivo
        Determina el número de líneas
