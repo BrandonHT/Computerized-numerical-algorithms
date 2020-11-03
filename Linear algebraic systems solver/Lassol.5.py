@@ -115,7 +115,7 @@ print("****")
 print("    **** Empieza el programa ****")
 print("****")
 try:
-    FN = open("9.Datos.txt","r")
+    FN = open("3.Datos.txt","r")
     print("Se abrió el archivo \"Datos.txt\"" )
 except:
     print("No se encontró el archivo \"Datos.txt\"")
@@ -125,7 +125,7 @@ lista = list(range(100))
 lista=FN.readlines()
 Filas=len(lista)
 print("Filas: "+str(Filas))
-FN = open("9.Datos.txt","r") 
+FN = open("3.Datos.txt","r") 
 Lineas=list(range(100))
 Lineas[0]=FN.readline()
 LineLen=len(Lineas[0])
@@ -136,7 +136,7 @@ if (Filas!=Columnas-1):
     print("**** \tFin de Programa ****\n\n\n")
     sys.exit()
 #endIf
-FN = open("9.Datos.txt","r")
+FN = open("3.Datos.txt","r")
 XY=list(range(Filas))
 for i in range(0,Filas):
     XY[i]=list(range(Columnas))
