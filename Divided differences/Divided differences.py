@@ -1,43 +1,37 @@
 # -*- coding: utf-8 -*-
-"""
 
-@author: cuauh
-"""
-
-# Diferencias divididas
+# Divided differences
 #
 import sys
 
-## FUNCIONES:
+## Functions:
     
 
-# Función que encuentra el término del producto
+# Function to find the product term
 def proterm(i, value, x): 
 	pro = 1; 
 	for j in range(i): 
-		pro = pro * (value - x[j]); 
+		pro = pro*(value-x[j]); 
 	return pro; 
 
-# Calcular la tabla de diferencias dividas
+# Function to calculate the divided differences table
 def dividedDiffTable(x, y, n): 
-
 	for i in range(1, n): 
-		for j in range(n - i): 
-			y[j][i] = ((y[j][i - 1] - y[j + 1][i - 1]) /
-									(x[j] - x[i + j])); 
+		for j in range(n-i): 
+			y[j][i]=((y[j][i-1]-y[j+1][i-1])/(x[j]-x[i+j])); 
 	return y; 
 
-# Función para aplicar la fórmula de DD
+# Function to apply the divided differences formula
 def applyFormula(value, x, y, n): 
 
-	sum = y[0][0]; 
+	result = y[0][0]; 
 
 	for i in range(1, n): 
-		sum = sum + (proterm(i, value, x) * y[0][i]); 
+		result = result + (proterm(i, value, x) * y[0][i]); 
 	
-	return sum; 
+	return result; 
 
-# Imprimir la tabla
+# Function to show the table in the console
 def printDiffTable(y, n): 
 
 	for i in range(n): 
@@ -106,7 +100,7 @@ for i in range(0,NumDatos):
     #endFor
 
 
-# Calcular tabla e imprimirla
+# Calculate the divided differences table
 ddt=dividedDiffTable(x, y, n); 
 print("\n La tabla de diferencias dividas es la siguiente: \n")
 printDiffTable(ddt, n); 

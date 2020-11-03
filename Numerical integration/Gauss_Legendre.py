@@ -1,12 +1,6 @@
-"""
-Created on Oct 12:17:05 2020
-
-@author: mcifu
-"""
-
 import sys
 import math
-from sympy import *
+from sympy import Symbol, diff, solve, integrate, sympify
 
 x = Symbol('x')
 y = Symbol('y')

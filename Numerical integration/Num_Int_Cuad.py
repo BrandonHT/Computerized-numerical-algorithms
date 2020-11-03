@@ -1,9 +1,5 @@
 # -*- coding: utf-8 -*-
-"""
-Created on Tue Oct 13 18:07:44 2020
 
-@author: carlo
-"""
 import sys 
 import math
 
