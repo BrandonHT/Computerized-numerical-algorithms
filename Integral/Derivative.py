@@ -463,6 +463,16 @@ print("Lower: "+str(Lower))
 Integral=Upper-Lower
 print("El valor de la integral definida entre %12.6f y %12.6f es %12.6f"  % (Inf,Sup,Integral))
 #
+
+Qderivative=list(range(D+1))             # Coeficientes de la derivada
+for i in range(1,D+1):
+    Qderivative[i]=P[i+1]*float(i)
+#endfor
+print("Derivada definida entre %6.4f y %6.4f" % (Inf,Sup))
+for i in range(1,D+1):
+    print("C%2.0f) %14.12f X**%2f" % (i-1,Qderivative[i],i-1))
+#endfor
+print()
 OutDat="Test.xls"
 try:
     FDO = open(OutDat,"w+")
@@ -481,3 +491,5 @@ for i in range(1,N+1):
 #endfor    
 FDO.close()
 print("\n**** Los datos de la integral interpolada se escribieron en "+OutDat)
+
+4815153017092036
