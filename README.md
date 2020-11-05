@@ -1,3 +1,3 @@
 # Algoritmos-numericos
 
-Repository to document the basic excercises and numerical methods to introduce the people to **Python** programming language. 
+Repository with basic excercises to introduce the people to **Python** programming language and computerized numerical methods. 
