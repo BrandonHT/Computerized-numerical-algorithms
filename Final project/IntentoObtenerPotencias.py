@@ -128,17 +128,17 @@ def stabilize():
 #
 def FirstSigns():
     for i in range(0,M):
-       rowmax=abs(ab[i][0])
-       for j in range(1,M+1):   
-           rowmax=max(rowmax,abs(ab[i][j]))
-       #endFor
-       if (rowmax==0):
-         return False
-       #endIf
-       scale=1/rowmax   
-       for j in range(0,M+1):
-           ab[i][j]=ab[i][j]*scale   
-       #endFor
+        rowmax=abs(ab[i][0])
+        for j in range(1,M+1):   
+            rowmax=max(rowmax,abs(ab[i][j]))
+        #endFor
+        if (rowmax==0):
+          return False
+        #endIf
+        scale=1/rowmax   
+        for j in range(0,M+1):
+            ab[i][j]=ab[i][j]*scale   
+        #endFor
     #endFor
     for k in range(0,M):
         big=0
@@ -370,7 +370,7 @@ def getExternal():
     #endif
     return
 
-def Converge(errorMin,coeficientes,v,w,x,y,z,listaErrores):
+def Converge(errorMin,coeficientes,listaErrores):
     cambio=False
     if (EpsiPh<=EpsiTh):
         if(EpsiTh<errorMin):
@@ -528,14 +528,16 @@ for vara in range(1,gradMax+1):
             for vard in range(1,gradMax+1):
                 for vare in range(1,gradMax+1):
                     varsAux=[vara,varb,varc,vard,vare]
-                    print("Give me the name of the Data to Analyze: \t")
+                    #print("Give me the name of the Data to Analyze: \t")
                     DTA="TRAIN.xls"
-                    print(DTA)
+                    #print(DTA)
+                    print("****************************************")
+                    print(vara,varb,varc,vard,vare)
                     try:
                         FN = open(DTA,"r")
-                        print("\t***\""+DTA+"\" was opened" )
+                        #print("\t***\""+DTA+"\" was opened" )
                     except:
-                        print("\t***\""+DTA+"\" was not found" )
+                        #print("\t***\""+DTA+"\" was not found" )
                         sys.exit("**** End of Program ****")
                     #endTrydat
                     Tuples=FN.readlines()
@@ -697,12 +699,12 @@ for vara in range(1,gradMax+1):
                     #endfor
                     for itera in range(1,infinity):
                         if (DEBUG):
-                           testInverse()
-                           dummy=input("INVERSE HAS BEEN CHECKED; \"ENTER\" to continue\n")
+                            testInverse()
+                            dummy=input("INVERSE HAS BEEN CHECKED; \"ENTER\" to continue\n")
                         #endif
                         getCoefs() 			            # Get Ci's from inner product
                         getExternal()                   # Largest error vector
-                        resConverge, cambio=Converge(errorMin,coeficientes,vara,varb,varc,vard,vare,listaErrores)
+                        resConverge, cambio=Converge(errorMin,coeficientes,listaErrores)
                         if (resConverge and cambio):
                             #printCoefs()
                             print("\n**********\n\tALGORITHM HAS CONVERGED\n\tEND OF PROGRAM\n**********")
@@ -715,3 +717,30 @@ for vara in range(1,gradMax+1):
                     #endfor
                     
                     print("-----------------------------SÍ LLEGUÉ :D----------------------")
+
+
+test=open("RECTEST.xls","r")
+testTuples=test.readlines()
+numTestData=len(testTuples)
+listaResultadosCombinaciones=[]
+for combinacion in coeficientes:
+    listaResultadosTuplas=[]
+    for tuplaTest in testTuples:
+        datosTest=tuplaTest.split("\t")
+        datosTest[4]=datosTest[4][:-1]
+        res=0
+        for i in range(len(combinacion)):
+            auxres=1
+            potSplit, coefSplit=combinacion[i].split('=')
+            potencias=[int(potSplit[2]),int(potSplit[3]),int(potSplit[4]),int(potSplit[5]),int(potSplit[6])]
+            coef=float(coefSplit)
+            for j in range(5):
+                auxres=auxres*(float(datosTest[j])**potencias[j])
+            res=res+(auxres*coef)
+        listaResultadosTuplas.append(res)
+    listaResultadosCombinaciones.append(listaResultadosTuplas)
+test.close()
+            
+            
+            
+                
