@@ -1,6 +1,14 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Wed Dec  9 17:51:49 2020
+
+@author: brand
+"""
+
 
 import random
 import sys
+from sklearn.metrics import mean_squared_error
 
 MaximumNumberOfIndependentVariables=5
 DEBUG=False
@@ -371,46 +379,33 @@ def getExternal():
     return
 
 def Converge(errorMin,coeficientes,listaErrores):
-    cambio=False
     if (EpsiPh<=EpsiTh):
-        if(EpsiTh<errorMin):
-            errorMin=EpsiTh
-            cambio=True
-            if(len(listaErrores)==10):
-                listaErrores,coeficientes=sort(10,listaErrores,coeficientes)
-                listaErrores[len(listaErrores)-1]=EpsiTh  
-                coeficientes[len(listaErrores)-1]=generateCoefs()
-            else:
-                listaErrores.append(EpsiTh)
-                coeficientes.append(generateCoefs())
-                listaErrores=sort(len(listaErrores),listaErrores,coeficientes)
+        listaErrores.append(EpsiTh)
+        coeficientes.append(generateCoefs())
+        listaErrores=sort(len(listaErrores),listaErrores,coeficientes)
         #print("ABSOLUTE")
-        return True, cambio
+        return True
     #endif
     diffErr=abs(EpsiTh-PrevTh)
     if (diffErr<10e-8):
         #print("ERROR DIFFERENCE<.00000001 \n\t["+str(diffErr)+"]")
-        if(EpsiTh<errorMin):
-            errorMin=EpsiTh
-            cambio=True
-            if(len(listaErrores)==10):
-                listaErrores,coeficientes=sort(10,listaErrores,coeficientes)
-                listaErrores[len(listaErrores)-1]=EpsiTh  
-                coeficientes[len(listaErrores)-1]=generateCoefs()
-            else:
-                listaErrores.append(EpsiTh)
-                coeficientes.append(generateCoefs())
-                listaErrores=sort(len(listaErrores),listaErrores,coeficientes)
-        return True, cambio
+        listaErrores.append(EpsiTh)
+        coeficientes.append(generateCoefs())
+        listaErrores=sort(len(listaErrores),listaErrores,coeficientes)
+        #print("ABSOLUTE")
+        return True
     #endif
     if ((EpsiTh<=PrevTh) and (itera>20)):
         for i in range(1,M+1):   #Retain best previous coefficients
             C[i]=T[i]
         #endfor
+        listaErrores.append(EpsiTh)
+        coeficientes.append(generateCoefs())
+        listaErrores=sort(len(listaErrores),listaErrores,coeficientes)
         #print("UNSTABLE")
-        return True, cambio
+        return True
     #endif
-    return False, cambio
+    return False
 #endConverge
 
 def getInternal():
@@ -530,7 +525,7 @@ for vara in range(1,gradMax+1):
                 for vare in range(1,gradMax+1):
                     varsAux=[vara,varb,varc,vard,vare]
                     #print("Give me the name of the Data to Analyze: \t")
-                    DTA="TRAIN.xls"
+                    DTA="customTrain.txt"
                     #print(DTA)
                     print("****************************************")
                     print(vara,varb,varc,vard,vare)
@@ -705,12 +700,10 @@ for vara in range(1,gradMax+1):
                         #endif
                         getCoefs() 			            # Get Ci's from inner product
                         getExternal()                   # Largest error vector
-                        resConverge, cambio=Converge(errorMin,coeficientes,listaErrores)
-                        if (resConverge and cambio):
+                        resConverge=Converge(errorMin,coeficientes,listaErrores)
+                        if (resConverge):
                             #printCoefs()
                             print("\n**********\n\tALGORITHM HAS CONVERGED\n\tEND OF PROGRAM\n**********")
-                            break
-                        if(resConverge and not cambio):
                             break
                         #endif
                         getInternal()                   # Best Internal vector
@@ -722,7 +715,7 @@ for vara in range(1,gradMax+1):
                     print("-----------------------------SÍ LLEGUÉ :D----------------------")
 
 
-test=open("RECTEST.xls","r")
+test=open("newCustomTest.txt","r")
 testTuples=test.readlines()
 numTestData=len(testTuples)
 listaResultadosCombinaciones=[]
@@ -743,4 +736,33 @@ for combinacion in coeficientes:
         listaResultadosTuplas.append(res)
     listaResultadosCombinaciones.append(listaResultadosTuplas)
 test.close()
+
+testResultados=open("customTest.txt","r")
+testResultadosTuples=testResultados.readlines()
+ultimaColumnaTest=[]
+for tupla in testResultadosTuples:
+    resAux=tupla.split('\t')
+    ultimaColumnaTest.append(float(resAux[5][:-1]))
             
+testResultados.close()
+
+
+listaRMSE=[]
+
+for comb in listaResultadosCombinaciones:
+    listaRMSE.append(mean_squared_error(ultimaColumnaTest, comb, squared=False))
+
+indice=listaRMSE.index(min(listaRMSE))
+
+print("********************************")
+print("Esta es la \"mejor combinación\" de coeficientes")
+print("********************************")
+for cof in coeficientes[indice]:
+    print(cof)
+
+coefResultados=open("coefResultados.xls", "w+")
+coefResultados.write("\n".join(coeficientes[indice]))
+coefResultados.close()
+
+
+
